@@ -119,8 +119,8 @@ const writeToCss = (filePath, data) => {
   }
 };
 
-const main = function (htmlFilePath, csvFilePath,
-  stylesFilePath, cssFilePath, sortingField) {
+const main = function ({ htmlFilePath, csvFilePath,
+  stylesFilePath, cssFilePath }, sortingField) {
   const data = csvToObject(csvFilePath);
   const cssData = readCss(stylesFilePath);
   const headers = data[ZERO];
@@ -134,5 +134,6 @@ const csvFilePath = process.argv[THREE];
 const stylesFilePath = process.argv[FOUR];
 const cssFilePath = process.argv[FIVE];
 const sortingField = process.argv[SIX];
+const paths = { htmlFilePath, csvFilePath, stylesFilePath, cssFilePath };
 
-main(htmlFilePath, csvFilePath, stylesFilePath, cssFilePath, sortingField);
+main(paths, sortingField);
