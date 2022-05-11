@@ -38,3 +38,7 @@ tbody>tr:hover {
   background-color: grey;
   color: white;
 }
+
+.sortedBy {
+  background-color: rgba(200, 200, 200);
+}
