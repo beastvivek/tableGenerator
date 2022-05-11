@@ -26,14 +26,18 @@ const generateObject = (stock) => {
 
 const arrayToObject = (stocksData) => stocksData.map(generateObject);
 
-const readData = () => {
-  let stocksData = [];
+const readData = (filePath) => {
+  let stocksData;
   try {
-    stocksData = fs.readFileSync('./stocksData.csv', 'utf8');
+    stocksData = fs.readFileSync(filePath, 'utf8');
   } catch (error) {
     log(error.message);
   }
-  return arrayToObject(stocksData.split('\r\n'));
+  return stocksData;
 };
 
-exports.readData = readData;
+const csvToObject = (filePath) => {
+  return arrayToObject(readData(filePath).split('\r\n'));
+};
+
+exports.csvToObject = csvToObject;

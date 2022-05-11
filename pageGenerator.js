@@ -1,14 +1,18 @@
 const fs = require('fs');
 const { log } = require('console');
 
-const { readData } = require('./csvToObject.js');
+const { csvToObject } = require('./csvToObject.js');
 
 const ZERO = 0;
 const ONE = 1;
 const TWO = 2;
+const THREE = 3;
+const FOUR = 4;
+const FIVE = 5;
+const SIX = 6;
 
-const tableData = (tableData, classAttr) => {
-  return '<td class="' + classAttr + '">' + tableData + '</td>';
+const tableData = (tableData) => {
+  return '<td>' + tableData + '</td>';
 };
 
 const tableHeading = (heading, classAttr) => {
@@ -18,7 +22,7 @@ const tableHeading = (heading, classAttr) => {
 const tableRow = (rows, stock) => {
   let rowData = '';
   for (const key in stock) {
-    rowData = rowData + tableData(stock[key], key);
+    rowData = rowData + tableData(stock[key]);
   }
   return rows + '<tr>' + rowData + '</tr>';
 };
@@ -85,20 +89,50 @@ const html = (stocks, key) => {
   return '<html>' + htmlHead + htmlBody + '</html>';
 };
 
-const writeToHtml = (data) => {
+const writeToHtml = (filePath, data) => {
   try {
-    fs.writeFileSync('./stocksTable.html', data, 'utf8');
+    fs.writeFileSync(filePath, data, 'utf8');
   } catch (error) {
     log(error.message, error.stack);
   }
 };
 
-const main = (sortingField) => {
-  const data = readData();
-  const headers = data[ZERO];
-  const selectedKey = fieldToKey(headers, sortingField);
-  writeToHtml(html(data, selectedKey));
+const readCss = (filePath) => {
+  let data;
+  try {
+    data = fs.readFileSync(filePath, 'utf8');
+  } catch (error) {
+    log(error.message, error.stack);
+  }
+  return data;
 };
 
-const sortingField = process.argv[TWO];
-main(sortingField);
+const generateStyling = (classAttr) => {
+  return '.' + classAttr + '{background-color: rgb(200,200,200);}';
+};
+
+const writeToCss = (filePath, data) => {
+  try {
+    fs.writeFileSync(filePath, data, 'utf8');
+  } catch (error) {
+    log(error.message, error.stack);
+  }
+};
+
+const main = function (htmlFilePath, csvFilePath,
+  stylesFilePath, cssFilePath, sortingField) {
+  const data = csvToObject(csvFilePath);
+  const cssData = readCss(stylesFilePath);
+  const headers = data[ZERO];
+  const selectedKey = fieldToKey(headers, sortingField);
+  writeToCss(cssFilePath, cssData + generateStyling(selectedKey));
+  writeToHtml(htmlFilePath, html(data, selectedKey));
+};
+
+const htmlFilePath = process.argv[TWO];
+const csvFilePath = process.argv[THREE];
+const stylesFilePath = process.argv[FOUR];
+const cssFilePath = process.argv[FIVE];
+const sortingField = process.argv[SIX];
+
+main(htmlFilePath, csvFilePath, stylesFilePath, cssFilePath, sortingField);
