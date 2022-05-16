@@ -1,45 +1,40 @@
 const fs = require('fs');
 const { log } = require('console');
 
-const createStock = (movieRecord) => {
-  return {
-    'symbol': movieRecord[0],
-    'name': movieRecord[1],
-    'sector': movieRecord[2],
-    'price': movieRecord[3],
-    'pe': movieRecord[4],
-    'divyield': movieRecord[5],
-    'eps': movieRecord[6],
-    '52weeklow': movieRecord[7],
-    '52weekhigh': movieRecord[8],
-    'marketcap': movieRecord[9],
-    'ebitda': movieRecord[10],
-    'ps': movieRecord[11],
-    'pb': movieRecord[12],
+const createObj = (headers, record) => {
+  const obj = {};
+  for (let index = 0; index < headers.length; index++) {
+    obj[headers[index]] = +record[index];
+    if (isNaN(obj[headers[index]])) {
+      obj[headers[index]] = record[index];
+    }
+  }
+  return obj;
+};
+
+const generateObject = (headers, delimiter) => {
+  return function (element) {
+    const elementStats = element.split(delimiter);
+    return createObj(headers, elementStats);
   };
 };
 
-const generateObject = (delimiter) => {
-  return function (stock) {
-    const movieStat = stock.split(delimiter);
-    return createStock(movieStat);
-  };
+const arrayToObject = (data, delimiter) => {
+  const headers = data[0].split(delimiter);
+  return data.map(generateObject(headers, delimiter));
 };
-
-const arrayToObject = (stocksData, delimiter) => stocksData.map(generateObject(delimiter));
 
 const readData = (filePath) => {
-  let stocksData;
+  let data;
   try {
-    stocksData = fs.readFileSync(filePath, 'utf8');
+    data = fs.readFileSync(filePath, 'utf8');
   } catch (error) {
     log(error.message);
   }
-  return stocksData;
+  return data;
 };
 
 const csvToObject = (filePath, delimiter) => {
-  const stringData = readData(filePath);
   return arrayToObject(readData(filePath).split('\n'), delimiter);
 };
 

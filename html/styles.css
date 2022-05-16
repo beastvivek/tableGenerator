@@ -15,6 +15,7 @@ body {
 table {
   border-collapse: collapse;
   margin: 1em;
+  text-align: center;
 }
 
 thead {

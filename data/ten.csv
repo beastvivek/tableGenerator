@@ -1,0 +1,10 @@
+id|name|types|speed|hp|base_experience|attack|defense|weight
+1|bulbasaur|grass,poison|45|45|64|49|49|69
+2|ivysaur|grass,poison|60|60|142|62|63|130
+3|venusaur|grass,poison|80|80|236|82|83|1000
+4|charmander|fire|65|39|62|52|43|85
+5|charmeleon|fire|80|58|142|64|58|190
+6|charizard|fire,flying|100|78|240|84|78|905
+7|squirtle|water|43|44|63|48|65|90
+8|wartortle|water|58|59|142|63|80|225
+9|blastoise|water|78|79|239|83|100|855

@@ -10,8 +10,12 @@ const THREE = 3;
 const FOUR = 4;
 const FIVE = 5;
 
+const generateTag = (tag, content) => {
+  return '<' + tag + '>' + content + '</' + tag + '>';
+};
+
 const tableData = (tableData) => {
-  return '<td>' + tableData + '</td>';
+  return generateTag('td', tableData);
 };
 
 const tableHeading = (heading, classAttr) => {
@@ -23,7 +27,7 @@ const tableRow = (rows, stock) => {
   for (const key in stock) {
     rowData = rowData + tableData(stock[key]);
   }
-  return rows + '<tr>' + rowData + '</tr>';
+  return rows + generateTag('tr', rowData);
 };
 
 const tableHead = (stock, selectedKey) => {
@@ -35,21 +39,13 @@ const tableHead = (stock, selectedKey) => {
     }
     header = header + tableHeading(stock[key], classAttr);
   }
-  return '<thead>' + '<tr>' + header + '</tr>' + '</thead>';
+  return generateTag('thead', generateTag('tr', header));
 };
 
 const ifGreater = (key) => {
   return function isGreater(object1, object2) {
     return object1[key] - object2[key];
   };
-};
-
-const fieldToKey = (object, field) => {
-  for (const key in object) {
-    if (object[key] === field) {
-      return key;
-    }
-  }
 };
 
 const sort = (array, key) => {
@@ -61,35 +57,35 @@ const sort = (array, key) => {
 
 const tableBody = (stocks) => {
   const body = stocks.reduce(tableRow, '');
-  return '<tbody>' + body + '</tbody>';
+  return generateTag('tbody', body);
 };
 
 const generateTable = (stocks, key) => {
   const sortedStocks = sort(stocks, key);
   const header = tableHead(sortedStocks[ZERO], key);
   const body = tableBody(sortedStocks.slice(ONE));
-  return '<table>' + header + body + '</table>';
+  return generateTag('table', header + body);
 };
 
 const generateHeading = (heading) => '<h1>' + heading + '</h1>';
 
 const body = (stocks, key) => {
-  const heading = generateHeading('Stock Table');
+  const heading = generateHeading('Table sorted according to a field');
   const table = generateTable(stocks, key);
   const body = heading + table;
-  return '<body>' + body + '</body>';
+  return generateTag('body', body);
 };
 
 const head = () => {
-  const titleTag = '<title>Stocks</title>';
+  const titleTag = '<title>Table</title>';
   const linkTag = '<link rel="stylesheet" href="styles.css"/>';
-  return '<head>' + titleTag + linkTag + '</head>';
+  return generateTag('head', titleTag + linkTag);
 };
 
 const html = (stocks, key) => {
   const htmlHead = head();
   const htmlBody = body(stocks, key);
-  return '<html>' + htmlHead + htmlBody + '</html>';
+  return generateTag('html', htmlHead + htmlBody);
 };
 
 const writeToHtml = (filePath, data) => {
@@ -102,9 +98,7 @@ const writeToHtml = (filePath, data) => {
 
 const main = function ({ htmlFilePath, csvFilePath }, sortingField, delimiter) {
   const data = csvToObject(csvFilePath, delimiter);
-  const headers = data[ZERO];
-  const selectedKey = fieldToKey(headers, sortingField);
-  writeToHtml(htmlFilePath, html(data, selectedKey));
+  writeToHtml(htmlFilePath, html(data, sortingField));
 };
 
 const htmlFilePath = process.argv[TWO];
