@@ -19,12 +19,14 @@ const createStock = (movieRecord) => {
   };
 };
 
-const generateObject = (stock) => {
-  const movieStat = stock.split(',');
-  return createStock(movieStat);
+const generateObject = (delimiter) => {
+  return function (stock) {
+    const movieStat = stock.split(delimiter);
+    return createStock(movieStat);
+  };
 };
 
-const arrayToObject = (stocksData) => stocksData.map(generateObject);
+const arrayToObject = (stocksData, delimiter) => stocksData.map(generateObject(delimiter));
 
 const readData = (filePath) => {
   let stocksData;
@@ -36,8 +38,9 @@ const readData = (filePath) => {
   return stocksData;
 };
 
-const csvToObject = (filePath) => {
-  return arrayToObject(readData(filePath).split('\r\n'));
+const csvToObject = (filePath, delimiter) => {
+  const stringData = readData(filePath);
+  return arrayToObject(readData(filePath).split('\n'), delimiter);
 };
 
 exports.csvToObject = csvToObject;

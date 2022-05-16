@@ -8,6 +8,7 @@ const ONE = 1;
 const TWO = 2;
 const THREE = 3;
 const FOUR = 4;
+const FIVE = 5;
 
 const tableData = (tableData) => {
   return '<td>' + tableData + '</td>';
@@ -99,8 +100,8 @@ const writeToHtml = (filePath, data) => {
   }
 };
 
-const main = function ({ htmlFilePath, csvFilePath }, sortingField) {
-  const data = csvToObject(csvFilePath);
+const main = function ({ htmlFilePath, csvFilePath }, sortingField, delimiter) {
+  const data = csvToObject(csvFilePath, delimiter);
   const headers = data[ZERO];
   const selectedKey = fieldToKey(headers, sortingField);
   writeToHtml(htmlFilePath, html(data, selectedKey));
@@ -109,6 +110,7 @@ const main = function ({ htmlFilePath, csvFilePath }, sortingField) {
 const htmlFilePath = process.argv[TWO];
 const csvFilePath = process.argv[THREE];
 const sortingField = process.argv[FOUR];
+const delimiter = process.argv[FIVE];
 const paths = { htmlFilePath, csvFilePath };
 
-main(paths, sortingField);
+main(paths, sortingField, delimiter);
