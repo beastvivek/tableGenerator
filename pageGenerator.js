@@ -78,7 +78,7 @@ const body = (stocks, key) => {
 
 const head = () => {
   const titleTag = '<title>Table</title>';
-  const linkTag = '<link rel="stylesheet" href="styles.css"/>';
+  const linkTag = '<link rel="stylesheet" href="html/styles.css"/>';
   return generateTag('head', titleTag + linkTag);
 };
 
