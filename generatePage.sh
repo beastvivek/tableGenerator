@@ -15,4 +15,4 @@ read -p 'Enter the field according to which you want to sort  ' field
 
 node pageGenerator.js ${html_file_path} ${csv_file_path} "${field}" "${delimiter}"
 
-open html/index.html
+open index.html
