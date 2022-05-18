@@ -39,3 +39,6 @@ const csvToObject = (filePath, delimiter) => {
 };
 
 exports.csvToObject = csvToObject;
+exports.createObj = createObj;
+exports.arrayToObject = arrayToObject;
+exports.csvToObject = csvToObject;
